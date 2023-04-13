@@ -16,11 +16,13 @@ return new class extends Migration
 
             $table->string('name', 250);
             $table->string('email', 150);
-            $table->integer('phone');
+            $table->string('phone', 14);
             $table->string('desired_job', 500);
             $table->string('schooling', 250);
             $table->string('observations', 2500)->nullable(true);
             $table->string('document', 2500);
+            $table->string('IPV4_address', 45);
+
 
             $table->timestamps();
         });

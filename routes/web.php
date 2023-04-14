@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CurriculumController;
+use App\Http\Controllers\MailController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,3 +16,4 @@ use App\Http\Controllers\CurriculumController;
 */
 
 Route::resource('/', CurriculumController::class);
+// Route::get('/seeModelMail', MailController::class);

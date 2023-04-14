@@ -20,7 +20,7 @@ class CurriculumMail extends Mailable
      */
     public function __construct(public array $dataFilteredToMail, public string $fileName, public $file)
     {
-        // dd($dataFilteredToMail);
+        
     }
 
     /**

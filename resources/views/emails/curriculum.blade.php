@@ -1,16 +1,3 @@
-{{-- <h1>Email de teste  --}}
-    
-    {{-- {{ $fileName }} --}}
-
-{{-- </h1> --}}
-
-{{-- <h2 class="px-">
-    @foreach ($allFields as $item)
-    {{ $item }}
-    @endforeach
-</h2> --}}
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,9 +37,6 @@
                     <p> {{ $item }} </p>
                 </div>
             @endforeach
-            {{-- <p class="pt-2 text-base">
-                To learn more about the things you can do, take a look at the <a href="https://beyondco.de/docs/laravel-playground" class="underline" target="_blank">official documentation</a>.
-            </p> --}}
         </div>
     </div>
     <footer id="credits">

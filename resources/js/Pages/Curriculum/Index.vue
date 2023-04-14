@@ -1,17 +1,4 @@
-<!--
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
--->
+<!-- template based and inspired on free form component of TailwindCSS -->
 <template>
   <div class="bg-[#E8D4D1] max-w-7xl px-4 py-12 sm:px-6 sm:py-12 lg:px-8 lg:w-[60vw]">
     <div class="flex items-center flex-col bg-white px-4 py-12 rounded-lg border-4 border-t-[#FFE6FF] border-r-[#FFE6FF] border-b-[#FFEDE6] border-l-[#FFEDE6] ">
@@ -136,8 +123,7 @@
 </template>
 
 <script setup>
-  import { UserCircleIcon, DocumentArrowUpIcon} from '@heroicons/vue/24/solid';
-  import { looseToNumber } from '@vue/shared';
+  import { DocumentArrowUpIcon } from '@heroicons/vue/24/solid';
   import $ from 'jquery';
   import { ref } from 'vue';
 
@@ -198,7 +184,8 @@
   let showDataAndScheduleSended = ref(false);
   let hideButtom = ref(false);
   let serverStatus = ref(false);
-  let dateEmailSended, scheduleEmailSended;
+  let dateEmailSended;
+  let scheduleEmailSended;
   
   const data = {
     name : ref(''),
@@ -210,6 +197,7 @@
     'file-upload' : ref(null),
   }
   
+  
   $.ajaxSetup({
       headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -218,7 +206,9 @@
 
   $(document).on('submit', '#idForm', function(e){
     e.preventDefault();
+
     hideButtom.value = true; 
+
     $.ajax({
         url: '/',
         type: 'POST',
@@ -230,8 +220,6 @@
           errorsOnAjaxRequest.value = {};
           showDataAndScheduleSended.value = true;
           hideButtom.value = false;
-          // console.log(data); 
-          // console.log(data.curriculum['created_at']);
           dateEmailSended = getDateAndSchedule(data.curriculum['created_at'])[0];
           scheduleEmailSended = getDateAndSchedule(data.curriculum['created_at'])[1];
 
@@ -239,12 +227,8 @@
             showDataAndScheduleSended.value = false; 
           }, 5000);
         },
-        error: function (response, textStatus, errorThrown) { 
-            // console.log(response.status, errorThrown)
-            
+        error: function (response, textStatus, errorThrown) {             
             hideButtom.value = false; 
-            // console.log(response.responseJSON.message);
-            // errorsOnAjaxRequest = Object.entries(response.responseJSON.errors).map((e) => ( { [e[0]]: e[1] } ));
             if(response.status === 422){
               errorsOnAjaxRequest.value = response.responseJSON.errors;
             } else{
@@ -253,27 +237,21 @@
                 serverStatus.value = false;
               }, 4000);
             }
-            // response.mess
         }
     });
   })
 
   function getDateAndSchedule(dateString){
     dateString = new Date(dateString);
-    console.log(dateString);
-    console.log(dateString.getFullYear())
-    let date = `${dateString.getDate()}/${dateString.getMonth() + 1}/${dateString.getFullYear()}`;
 
+    let date = `${dateString.getDate()}/${dateString.getMonth() + 1}/${dateString.getFullYear()}`;
     let schedule = `${dateString.getHours()}:${dateString.getMinutes()}:${dateString.getSeconds()}`;
+
     return [date, schedule]
   }
 
   function listeningFile(event){
     let file = event.target.files[0];
-    // data.document = file;
-    // let formData = new FormData();
-    // formData.append('file', file);
-    // console.log(file);
     data['file-upload'].value = file;
   }
 

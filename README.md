@@ -2,10 +2,9 @@
 
 Passos para testar o projeto:
 <br>
-1. Renomear arquivo '.env.example' para '.env' e configurá-lo: <br>
-    1.1 Configurar sua conexão com o banco de dados <br>
-        1.1.1 Exemplo: 
-        <br>
+1. Renomear arquivo '.env.example' para '.env' e configurá-lo: </br>
+    1.1 Configurar sua conexão com o banco de dados, por exemplo: 
+        <br><br>
             DB_CONNECTION=mysql <br>
             DB_HOST=127.0.0.1 <br>
             DB_PORT=3306 <br>
@@ -13,8 +12,8 @@ Passos para testar o projeto:
             DB_USERNAME=root <br>
             DB_PASSWORD= 123 <br>
         <br>
-    1.2 Configurar seu servidor de emails (eu usei o teste grátis do Mailtrap) </br>
-        1.2.1 Exemplo: </br>
+    1.2 Configurar seu servidor de emails (eu usei o teste grátis do Mailtrap), por exemplo: 
+        <br><br>
         MAIL_MAILER=smtp </br> 
         MAIL_HOST=sandbox.smtp.mailtrap.io </br>
         MAIL_PORT=2525 </br>

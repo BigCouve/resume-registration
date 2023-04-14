@@ -9,17 +9,18 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
+use Illuminate\Mail\Mailables\Attachment;
+
 
 class CurriculumMail extends Mailable
 {
     use Queueable, SerializesModels;
-
     /**
      * Create a new message instance.
      */
-    public function __construct( public array $allFields, public string $fileName)
+    public function __construct(public array $dataFilteredToMail, public string $fileName, public $file)
     {
-        // dd($allFields);
+        // dd($dataFilteredToMail);
     }
 
     /**
@@ -28,9 +29,9 @@ class CurriculumMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Curriculum Sended in Mail',
+            subject: 'Candidatura',
             replyTo: [
-                new Address($this->allFields['email']),
+                new Address('douglasamc9@gmail.com', 'Douglas C.'),
             ],
         );
     }
@@ -52,6 +53,8 @@ class CurriculumMail extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        return [
+            // Attachment::fromData(fn () => $this->file, 'Curriculum.pdf')
+        ];
     }
 }

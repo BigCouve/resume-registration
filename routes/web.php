@@ -16,4 +16,16 @@ use App\Http\Controllers\MailController;
 */
 
 Route::resource('/', CurriculumController::class);
-// Route::get('/seeModelMail', MailController::class);
+Route::get('/seeModelMail', function(){
+    $x = [
+        'Nome' => 'Askdja asd ',
+        'Email' => 'bigcouve2@gmail.com',
+        'Telefone' => '18923193182',
+        'Observações' => 'alguma observacao aqui',
+        'Escolaridade' => 'pos graduacao',
+        'Cargo Desejado' => 'Desenvolvedor Full Stack'
+    ];
+    $y = 'Algum nome de arquivo';
+
+    return new App\Mail\CurriculumMail($x, $y, 'arquivo aqui');
+});

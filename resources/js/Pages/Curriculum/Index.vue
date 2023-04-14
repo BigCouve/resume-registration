@@ -117,14 +117,17 @@
             <!-- END CODEBLOCK 2 -->
           </div>
       
-          <div class="mt-6 flex items-center justify-end gap-x-6">
-            <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancelar</button>
+          <div v-if="!showDataAndScheduleSended && !hideButtom" class="mt-6 flex items-center justify-end gap-x-6">
             <button id="button-send-form" @click="sendForm" type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Enviar</button>
           </div>
 
 
           <div v-if="showDataAndScheduleSended" id="alert-form-success" class="space-y-12 mt-5 py-3 px-2 rounded bg-[#BFFFBF]">
-            Formulário enviado com sucesso, em {{ date }} às {{ schedule }}
+            Formulário enviado com sucesso, em {{ dateEmailSended }} às {{ scheduleEmailSended }}
+          </div>
+
+          <div v-if="serverStatus" id="alert-form-success" class="space-y-12 mt-5 py-3 px-2 rounded bg-[#8B0000] text-white">
+            Erro no servidor, tente novamente
           </div>
         </form>
       </div>
@@ -133,7 +136,8 @@
 </template>
 
 <script setup>
-  import { PhotoIcon, UserCircleIcon, DocumentArrowUpIcon} from '@heroicons/vue/24/solid';
+  import { UserCircleIcon, DocumentArrowUpIcon} from '@heroicons/vue/24/solid';
+  import { looseToNumber } from '@vue/shared';
   import $ from 'jquery';
   import { ref } from 'vue';
 
@@ -191,7 +195,10 @@
   ]
     
   let errorsOnAjaxRequest = ref({});
-  let showDataAndScheduleSended = false;
+  let showDataAndScheduleSended = ref(false);
+  let hideButtom = ref(false);
+  let serverStatus = ref(false);
+  let dateEmailSended, scheduleEmailSended;
   
   const data = {
     name : ref(''),
@@ -211,7 +218,7 @@
 
   $(document).on('submit', '#idForm', function(e){
     e.preventDefault();
-    
+    hideButtom.value = true; 
     $.ajax({
         url: '/',
         type: 'POST',
@@ -219,18 +226,48 @@
         processData: false,
         contentType: false,
         cache: false,
-        success: function (data, status) { alert("Data: " + data + "\nStatus: " + status); },
+        success: function (data, status) { 
+          errorsOnAjaxRequest.value = {};
+          showDataAndScheduleSended.value = true;
+          hideButtom.value = false;
+          // console.log(data); 
+          // console.log(data.curriculum['created_at']);
+          dateEmailSended = getDateAndSchedule(data.curriculum['created_at'])[0];
+          scheduleEmailSended = getDateAndSchedule(data.curriculum['created_at'])[1];
+
+          setTimeout(() => {
+            showDataAndScheduleSended.value = false; 
+          }, 5000);
+        },
         error: function (response, textStatus, errorThrown) { 
             // console.log(response.status, errorThrown)
-            console.log(response.responseJSON.message);
+            
+            hideButtom.value = false; 
+            // console.log(response.responseJSON.message);
             // errorsOnAjaxRequest = Object.entries(response.responseJSON.errors).map((e) => ( { [e[0]]: e[1] } ));
             if(response.status === 422){
               errorsOnAjaxRequest.value = response.responseJSON.errors;
+            } else{
+              serverStatus.value = true;
+              setTimeout(() => {
+                serverStatus.value = false;
+              }, 4000);
             }
             // response.mess
         }
     });
   })
+
+  function getDateAndSchedule(dateString){
+    dateString = new Date(dateString);
+    console.log(dateString);
+    console.log(dateString.getFullYear())
+    let date = `${dateString.getDate()}/${dateString.getMonth() + 1}/${dateString.getFullYear()}`;
+
+    let schedule = `${dateString.getHours()}:${dateString.getMinutes()}:${dateString.getSeconds()}`;
+    return [date, schedule]
+  }
+
   function listeningFile(event){
     let file = event.target.files[0];
     // data.document = file;
@@ -239,48 +276,6 @@
     // console.log(file);
     data['file-upload'].value = file;
   }
-
-  function sendForm() {
-    // $.post("/",
-    // data,
-    // function(data, status){
-    //   alert("Data: " + data + "\nStatus: " + status);
-    // })
-    // .fail((response, textStatus, errorThrown) => {
-    //   //convert the object to array of objects
-    //   errorsOnAjaxRequest = Object.entries(response.responseJSON.errors).map((e) => ( { [e[0]]: e[1] } ));
-    // }) 
-    
-    
-
-
-      // $("#button-send-form").click(function () {
-
-      //     var iframe = $('<iframe name="postiframe" id="postiframe" style="display: none"></iframe>');
-
-      //     $("body").append(iframe);
-
-      //     var form = $('#uploadForm');
-      //     form.attr("action", "/");
-      //     form.attr("method", "post");
-
-      //     form.attr("encoding", "multipart/form-data");
-      //     form.attr("enctype", "multipart/form-data");
-
-      //     form.attr("target", "postiframe");
-      //     form.attr("file", $('#userfile').val());
-      //     form.submit();
-
-      //     $("#postiframe").load(function () {
-      //         iframeContents = this.contentWindow.document.body.innerHTML;
-      //         $("#textarea").html(iframeContents);
-      //     });
-
-      //     return false;
-
-      // });
-
-  } 
 
 </script>
 

@@ -19,8 +19,16 @@ class CurriculumController extends Controller
 
     public function store(CurriculumRequest $request)
     {
-        $curriculum;
         $fileName = rand() . '.' . $request->file('file-upload')->getClientOriginalExtension();
+        $file = $request['file-upload'];
+        $dataFilteredToMail = [
+            'Nome' => $request['name'],
+            'Email' => $request['email'],
+            'Telefone' => $request['phone'],
+            'Escolaridade' => $request['schooling'],
+            'Cargo Desejado' => $request['desired-job'],
+            'Observações' => $request['observations'],
+        ];
 
         $curriculum = Curriculum::create([
             'name' => $request['name'],
@@ -29,16 +37,13 @@ class CurriculumController extends Controller
             'schooling' => $request['schooling'],
             'desired_job' => $request['desired-job'],
             'observations' => $request['observations'],
-            // 'document' => $request['file-upload'],
             'document' => $fileName,
             'IPV4_address' => $_SERVER['REMOTE_ADDR'],
         ]);
 
-        Mail::to($request['email'])->send(new CurriculumMail($request->all(), $fileName));
+        Mail::to($request['email'])->send(new CurriculumMail($dataFilteredToMail, $fileName, $file));
 
-        $data = [
-            "curriculum" => $curriculum,
-        ];
+        $data = ["curriculum" => $curriculum];
 
         return response()->json($data);
     }

@@ -44,16 +44,47 @@
         <div class="text-dark-blue-800 text-xl pt-4">
             <h1 class="text-2xl font-bold">Dados do formulário</h1>
 
-            @foreach ($allFields as $item)
-                <h4> {{ $item }} </h4>
+            @foreach ($dataFilteredToMail as $key => $item)
+                <div class="form-data-lines">
+                    <p> {{ $key }}  : </p>
+                    <p> {{ $item }} </p>
+                </div>
             @endforeach
-            <p class="pt-2 text-base">
+            {{-- <p class="pt-2 text-base">
                 To learn more about the things you can do, take a look at the <a href="https://beyondco.de/docs/laravel-playground" class="underline" target="_blank">official documentation</a>.
-            </p>
+            </p> --}}
         </div>
     </div>
+    <footer id="credits">
+        Layout inspired and provided by: 
+        <a href="https://beyondco.de/"> Beyond Code </a>    
+    </footer>
 </body>
 </html>
 
 
 
+<style>
+ 
+ body{
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: space-between;
+ }
+ #credits {
+    display: flex;
+    justify-content: center;
+    column-gap: 0.5rem;
+    margin-bottom: 1rem;
+ }
+
+ #credits a {
+    color: blue;
+ }
+
+ .form-data-lines{
+    display: flex; 
+    column-gap: 0.5rem
+ }
+</style>

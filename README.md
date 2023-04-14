@@ -25,8 +25,8 @@ Passos para testar o projeto:
     </br>
 2. composer update </br>
 3. php artisan key:generate </br>
-4. php artisan serve (in a CLI) </br>
+4. php artisan serve (em um CLI) </br>
 5. npm install </br>
-6. npm run dev (in other CLI) </br>
-7. Open http://localhost:8000/
+6. npm run dev (em outro CLI) </br>
+7. Abrir o http://localhost:8000/
         

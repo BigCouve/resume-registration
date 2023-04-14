@@ -54,7 +54,7 @@ class CurriculumMail extends Mailable
     public function attachments(): array
     {
         return [
-            // Attachment::fromData(fn () => $this->file, 'Curriculum.pdf')
+            Attachment::fromData(fn () => $this->file->getRealPath(), 'Curriculum.pdf')
         ];
     }
 }

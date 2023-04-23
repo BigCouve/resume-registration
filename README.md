@@ -1,4 +1,4 @@
-# teste-desenvolvedor-paytour
+# Cadastro de currículo
 
 Passos para testar o projeto:
 <br>
